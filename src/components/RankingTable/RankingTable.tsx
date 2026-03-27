@@ -46,7 +46,7 @@ export const RankingTable = () => {
         </p>
       </section>
       <section>
-        <div>
+        <div className={styles.tableWrap}>
           <table>
             <thead>
               <tr>
