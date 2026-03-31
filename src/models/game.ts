@@ -14,7 +14,7 @@ export interface IGame {
   fixedRows?: IRow[];
 }
 
-interface ICategory {
+export interface ICategory {
   aliases: string[];
   exactLineStart?: string;
   fixedPrize?: number;

@@ -70,3 +70,10 @@ export function formatCurrency(value?: number | null, fallback = '-') {
     maximumFractionDigits: 2,
   }).format(value);
 }
+
+/**
+ * Formatea probabilidades y contadores con separador de miles.
+ */
+export function formatNumber(value: number) {
+  return new Intl.NumberFormat('es-ES').format(Math.round(value || 0));
+}

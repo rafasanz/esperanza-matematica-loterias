@@ -1,10 +1,10 @@
-import type { IGame } from '../../models/game';
+import type { ICategory, IGame } from '../../models/game';
 import type { IGameRanking } from '../../models/gameRanking';
 import type { ILiveEntry } from '../../models/liveEntry';
 import type { IParsedGame } from '../../models/parsedGame';
 import {
   liveSectionBoundaries,
-  sectionBoundaries,
+  SECTION_BOUNDARIES,
 } from '../../utils/constants';
 import { extractSpanishWeekday, formatSpanishDate } from '../../utils/i18n';
 
@@ -34,14 +34,14 @@ export function parseLiveEntries(text: string): ILiveEntry[] {
     .filter(Boolean);
   const entries = [];
 
-  for (let index = 0; index < lines.length; index += 1) {
+  for (let index = 0; index < lines.length; index++) {
     if (!liveSectionBoundaries.includes(lines[index])) {
       continue;
     }
 
     let endIndex = lines.length;
 
-    for (let nextIndex = index + 1; nextIndex < lines.length; nextIndex += 1) {
+    for (let nextIndex = index + 1; nextIndex < lines.length; nextIndex++) {
       if (liveSectionBoundaries.includes(lines[nextIndex])) {
         endIndex = nextIndex;
         break;
@@ -132,27 +132,28 @@ function isLiveDateLine(line: string) {
  * Extrae de la página de resultados toda la información relevante de un juego concreto.
  */
 export function parseGame(
-  text: string,
-  liveEntries: ILiveEntry[],
   game: IGame,
+  results: string,
+  liveEntries: ILiveEntry[],
 ): IParsedGame | null {
-  const lines = text
+  const lines = results
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean);
+
   const startIndex = lines.findIndex((line) =>
     line.startsWith(game.startsWith),
   );
 
-  if (startIndex === -1) {
+  if (startIndex < 0) {
     return null;
   }
 
   let endIndex = lines.length;
 
-  for (let index = startIndex + 1; index < lines.length; index += 1) {
+  for (let index = startIndex + 1; index < lines.length; index++) {
     if (
-      sectionBoundaries.some((boundary) => lines[index].startsWith(boundary))
+      SECTION_BOUNDARIES.some((boundary) => lines[index].startsWith(boundary))
     ) {
       endIndex = index;
       break;
@@ -260,17 +261,18 @@ function extractMetric(text: string, regex: RegExp) {
 /**
  * Localiza la línea exacta de una categoría dentro del bloque de resultados del juego.
  */
-function findCategoryLine(
-  lines: string[],
-  category: { exactLineStart?: string },
-) {
-  const exactLineStart = category.exactLineStart;
-
-  if (!exactLineStart) {
-    return null;
+function findCategoryLine(lines: string[], category: ICategory) {
+  if (category.exactLineStart) {
+    return (
+      lines.find((line) => line.startsWith(category.exactLineStart!)) || null
+    );
   }
 
-  return lines.find((line) => line.startsWith(exactLineStart)) || null;
+  return (
+    lines.find((line) =>
+      category.aliases.some((alias) => line.includes(alias)),
+    ) || null
+  );
 }
 
 /**

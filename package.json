@@ -1,8 +1,12 @@
 {
   "name": "esperanza-matematica-loterias",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.5.0",
   "type": "module",
+  "author": {
+    "name": "rafasanz",
+    "url": "https://github.com/rafasanz"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

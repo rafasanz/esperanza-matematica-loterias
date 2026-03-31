@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { IGameRanking } from '../../models/gameRanking';
-import { FETCH_URL, games, LIVE_FETCH_URL } from '../../utils/constants';
+import { FETCH_URL, GAMES, LIVE_FETCH_URL } from '../../utils/constants';
 import { fetchSource } from '../../utils/http';
 import {
   calculateExpectation,
@@ -19,11 +19,12 @@ export const loadGamesRanking = createAsyncThunk<IGameRanking[], void>(
         fetchSource(LIVE_FETCH_URL, 'ahora en juego'),
       ]);
 
-      const normalized = normalizeText(resultsText);
-      const liveEntries = parseLiveEntries(normalizeText(liveGamesText));
+      const results = normalizeText(resultsText);
+      const liveGames = parseLiveEntries(normalizeText(liveGamesText));
 
-      const digestedRanking = games
-        .map((game) => parseGame(normalized, liveEntries, game))
+      const digestedRanking = GAMES.map((game) =>
+        parseGame(game, results, liveGames),
+      )
         .filter(Boolean)
         .map((parsedGame) => calculateExpectation(parsedGame!)) // filter(Boolean) ensures parsedGame exists at this point. We can use ! operator safely.
         .sort(compareGamesByExpectation);
