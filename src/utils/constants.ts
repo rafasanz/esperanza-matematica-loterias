@@ -1,5 +1,5 @@
-import type { IGame, IRow } from '../models/game';
-import type { ILiveEntry } from '../models/liveEntry';
+import type { IGame, IRow } from '~models/game';
+import type { ILiveEntry } from '~models/liveEntry';
 
 export const SOURCE_URL = 'https://www.loteriasyapuestas.es/es/resultados';
 export const FETCH_URL = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(`https://r.jina.ai/http://${SOURCE_URL}`)}`;
@@ -105,31 +105,31 @@ export const GAMES: IGame[] = [
         key: 'special',
         label: 'Especial',
         aliases: ['Especial (6 Aciertos + R)'],
-        odds: 139838160,
+        odds: 139_838_160,
       },
       {
         key: 'first',
         label: '1ª (6)',
         aliases: ['1ª (6 Aciertos)'],
-        odds: 13983816,
+        odds: 13_983_816,
       },
       {
         key: 'second',
         label: '2ª (5+C)',
         aliases: ['2ª (5 Aciertos + C)'],
-        odds: 2330636,
+        odds: 2_330_636,
       },
       {
         key: 'third',
         label: '3ª (5)',
         aliases: ['3ª (5 Aciertos)'],
-        odds: 55491,
+        odds: 55_491,
       },
       {
         key: 'fourth',
         label: '4ª (4)',
         aliases: ['4ª (4 Aciertos)'],
-        odds: 1032,
+        odds: 1_032,
       },
       { key: 'fifth', label: '5ª (3)', aliases: ['5ª (3 Aciertos)'], odds: 57 },
       {
@@ -217,7 +217,7 @@ export const GAMES: IGame[] = [
         aliases: ['4ª (4 + 0)'],
         odds: 14_342,
       },
-      { key: 'fifth', label: '5ª (3+1)', aliases: ['5ª (3 + 1)'], odds: 2689 },
+      { key: 'fifth', label: '5ª (3+1)', aliases: ['5ª (3 + 1)'], odds: 2_689 },
       { key: 'sixth', label: '6ª (3+0)', aliases: ['6ª (3 + 0)'], odds: 299 },
       { key: 'seventh', label: '7ª (2+1)', aliases: ['7ª (2 + 1)'], odds: 172 },
       { key: 'eighth', label: '8ª (2+0)', aliases: ['8ª (2 + 0)'], odds: 19 },
@@ -283,14 +283,19 @@ export const GAMES: IGame[] = [
         aliases: ['1ª (6 Números + Caballo Ganador)'],
         odds: 8_835_372,
       },
-      { key: 'second', label: '2ª', aliases: ['2ª (6 Números)'], odds: 803216 },
+      {
+        key: 'second',
+        label: '2ª',
+        aliases: ['2ª (6 Números)'],
+        odds: 803_216,
+      },
       {
         key: 'third',
         label: '3ª',
         aliases: ['3ª (5 Números + Caballo Ganador)'],
         odds: 58_902,
       },
-      { key: 'fourth', label: '4ª', aliases: ['4ª (5 Números)'], odds: 5355 },
+      { key: 'fourth', label: '4ª', aliases: ['4ª (5 Números)'], odds: 5_355 },
       {
         key: 'fifth',
         label: '5ª',
@@ -376,18 +381,3 @@ export const liveSectionBoundaries = [
   'Quíntuple Plus',
   'Eurodreams',
 ];
-
-export const betState = {
-  activeGame: 'primitiva',
-  primitiva: {
-    draw: 'proximo',
-    numbers: [],
-    reintegro: null,
-    joker: false,
-  },
-  euromillones: {
-    draw: 'proximo',
-    numbers: [],
-    stars: [],
-  },
-};

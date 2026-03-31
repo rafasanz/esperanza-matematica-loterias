@@ -1,7 +1,7 @@
-import type { ILoadingStatus } from '../../store/gamesRanking/gamesRanking.reducer';
-import { useAppSelector } from '../../store/store';
-import { cls } from '../../utils/cls';
-import { formatCurrency } from '../../utils/i18n';
+import type { ILoadingStatus } from '~store/gamesRanking/gamesRanking.reducer';
+import { useAppSelector } from '~store/store';
+import { cls } from '~utils/cls';
+import { formatCurrency } from '~utils/i18n';
 
 import styles from './RankingTable.module.css';
 

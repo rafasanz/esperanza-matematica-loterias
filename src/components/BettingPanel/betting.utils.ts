@@ -1,4 +1,4 @@
-import type { IBetBallType } from '../../store/bets/bets.reducer';
+import type { IBetBallType } from '~store/bets/bets.reducer';
 import type { IBallProps } from './Ball/Ball';
 
 type IBettingGridShapeGroup = {

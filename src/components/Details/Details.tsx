@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../store/store';
+import { useAppSelector } from '~store/store';
 
 import styles from './Details.module.css';
 import { DetailsMetadata } from './DetailsMetadata/DetailsMetadata';

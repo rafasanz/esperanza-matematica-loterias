@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { formatCurrency } from '../../utils/i18n';
+import { formatCurrency } from '~utils/i18n';
 import { betsSelector } from '../rootSelector';
 import type { ISelector } from '../store';
 import type { IBetBallType, IBetGame } from './bets.reducer';

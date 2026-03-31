@@ -1,13 +1,10 @@
 import { getBettingGridShape } from '../betting.utils';
 
-import {
-  setJokerStatus,
-  setPrimitivaDraw,
-} from '../../../store/bets/bets.actions';
-import type { IBetsState } from '../../../store/bets/bets.reducer';
-import { selectSelectedDraw } from '../../../store/bets/bets.selector';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { cls } from '../../../utils/cls';
+import { setJokerStatus, setPrimitivaDraw } from '~store/bets/bets.actions';
+import type { IBetsState } from '~store/bets/bets.reducer';
+import { selectSelectedDraw } from '~store/bets/bets.selector';
+import { useAppDispatch, useAppSelector } from '~store/store';
+import { cls } from '~utils/cls';
 import { Ball } from '../Ball/Ball';
 import styles from '../BettingPanel.module.css';
 

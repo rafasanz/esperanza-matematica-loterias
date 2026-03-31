@@ -1,5 +1,5 @@
-import type { IGameRankingRow } from '../../../models/gameRanking';
-import { formatCurrency, formatNumber } from '../../../utils/i18n';
+import type { IGameRankingRow } from '~models/gameRanking';
+import { formatCurrency, formatNumber } from '~utils/i18n';
 import styles from './DetailsRows.module.css';
 
 interface IDetailsRowsProps {

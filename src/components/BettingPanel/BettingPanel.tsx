@@ -1,5 +1,5 @@
-import { selectActiveGame } from '../../store/bets/bets.selector';
-import { useAppSelector } from '../../store/store';
+import { selectActiveGame } from '~store/bets/bets.selector';
+import { useAppSelector } from '~store/store';
 import { BetSummary } from './BetSummary/BetSummary';
 import { BetTabs } from './BetTabs/BetTabs';
 import styles from './BettingPanel.module.css';

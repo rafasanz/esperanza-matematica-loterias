@@ -1,12 +1,9 @@
-import type { ICategory, IGame } from '../../models/game';
-import type { IGameRanking } from '../../models/gameRanking';
-import type { ILiveEntry } from '../../models/liveEntry';
-import type { IParsedGame } from '../../models/parsedGame';
-import {
-  liveSectionBoundaries,
-  SECTION_BOUNDARIES,
-} from '../../utils/constants';
-import { extractSpanishWeekday, formatSpanishDate } from '../../utils/i18n';
+import type { ICategory, IGame } from '~models/game';
+import type { IGameRanking } from '~models/gameRanking';
+import type { ILiveEntry } from '~models/liveEntry';
+import type { IParsedGame } from '~models/parsedGame';
+import { liveSectionBoundaries, SECTION_BOUNDARIES } from '~utils/constants';
+import { extractSpanishWeekday, formatSpanishDate } from '~utils/i18n';
 
 /**
  * Limpia el markdown devuelto por el proxy para dejar un texto plano más fácil de parsear.

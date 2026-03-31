@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import type { IGameRanking } from '../../models/gameRanking';
+import type { IGameRanking } from '~models/gameRanking';
 import { loadGamesRanking } from './gamesRanking.actions';
 
 export type ILoadingStatus = 'idle' | 'loading' | 'success' | 'error';

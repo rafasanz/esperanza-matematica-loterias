@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 
-import { toggleBall } from '../../../store/bets/bets.actions';
-import type { IBetBallType } from '../../../store/bets/bets.reducer';
-import { selectIsBallActive } from '../../../store/bets/bets.selector';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { cls } from '../../../utils/cls';
+import { toggleBall } from '~store/bets/bets.actions';
+import type { IBetBallType } from '~store/bets/bets.reducer';
+import { selectIsBallActive } from '~store/bets/bets.selector';
+import { useAppDispatch, useAppSelector } from '~store/store';
+import { cls } from '~utils/cls';
 import styles from './Ball.module.css';
 
 export interface IBallProps {

@@ -1,5 +1,5 @@
 import { useRef, type ComponentProps, type FC } from 'react';
-import { useActionOnClickOutside } from '../../hooks/useActionOnClickOutside';
+import { useActionOnClickOutside } from '~hooks/useActionOnClickOutside';
 
 import styles from './HowModal.module.css';
 

@@ -1,8 +1,8 @@
-import { setActiveGame } from '../../../store/bets/bets.actions';
-import type { IBetGame } from '../../../store/bets/bets.reducer';
-import { selectActiveGame } from '../../../store/bets/bets.selector';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { cls } from '../../../utils/cls';
+import { setActiveGame } from '~store/bets/bets.actions';
+import type { IBetGame } from '~store/bets/bets.reducer';
+import { selectActiveGame } from '~store/bets/bets.selector';
+import { useAppDispatch, useAppSelector } from '~store/store';
+import { cls } from '~utils/cls';
 import styles from './BetTabs.module.css';
 
 const TABS: { key: IBetGame; label: string }[] = [

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { pickRandomUnique, randomBetween } from '../../utils/random';
+import { pickRandomUnique, randomBetween } from '~utils/random';
 import {
   clearActiveBet,
   setActiveGame,

@@ -1,5 +1,5 @@
-import type { IGameRanking } from '../../../models/gameRanking';
-import { formatCurrency } from '../../../utils/i18n';
+import type { IGameRanking } from '~models/gameRanking';
+import { formatCurrency } from '~utils/i18n';
 
 import styles from './DetailsMetadata.module.css';
 

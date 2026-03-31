@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { IGameRanking } from '../../models/gameRanking';
-import { FETCH_URL, GAMES, LIVE_FETCH_URL } from '../../utils/constants';
-import { fetchSource } from '../../utils/http';
+import type { IGameRanking } from '~models/gameRanking';
+import { FETCH_URL, GAMES, LIVE_FETCH_URL } from '~utils/constants';
+import { fetchSource } from '~utils/http';
 import {
   calculateExpectation,
   compareGamesByExpectation,

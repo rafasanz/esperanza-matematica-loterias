@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useTheme } from '../../hooks/useTheme';
+import { useTheme } from '~hooks/useTheme';
 
-import { loadGamesRanking } from '../../store/gamesRanking/gamesRanking.actions';
-import { useAppDispatch, useAppSelector } from '../../store/store';
-import { HowModal } from '../HowModal/HowModal';
+import { HowModal } from '~components/HowModal/HowModal';
+import { loadGamesRanking } from '~store/gamesRanking/gamesRanking.actions';
+import { useAppDispatch, useAppSelector } from '~store/store';
 import styles from './Header.module.css';
 
 export const Header = () => {
