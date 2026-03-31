@@ -1,0 +1,73 @@
+.RankingTable {
+  section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .source {
+    margin: 0 0 12px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .tableWrap {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      overflow-x: auto;
+
+      tr:not(:last-child) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      th,
+      td {
+        padding: 10px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 13px;
+      }
+
+      .date,
+      .currency {
+        white-space: nowrap;
+      }
+
+      .date {
+        text-align: center;
+      }
+
+      .currency {
+        text-align: right;
+      }
+
+      .positive,
+      .negative {
+        font-weight: 700;
+      }
+
+      .positive {
+        color: var(--success);
+      }
+
+      .negative {
+        color: var(--danger);
+      }
+
+      .na {
+        color: var(--muted);
+        font-weight: 600;
+      }
+    }
+  }
+}

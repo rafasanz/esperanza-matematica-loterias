@@ -1,0 +1,40 @@
+.Header {
+  padding: 16px;
+  margin-bottom: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .title,
+  .actions {
+    @media (width <= 720px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  h1 {
+    margin: 0 0 6px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.05;
+  }
+
+  p {
+    margin: 0 0 12px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+}

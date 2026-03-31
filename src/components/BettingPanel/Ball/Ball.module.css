@@ -1,0 +1,69 @@
+.Ball {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1;
+  margin-top: 0;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--primary-soft-border);
+  background: transparent;
+  color: var(--primary);
+  font-size: clamp(11px, 0.85vw, 14px);
+  font-weight: 700;
+  overflow: hidden;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+
+  &:not(.starBall):hover:not(.active) {
+    background: var(--primary-hover);
+    border-color: var(--primary);
+  }
+
+  &.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--ball-active-text);
+  }
+
+  &.starBall {
+    aspect-ratio: 1;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--star-number);
+
+    .starShape {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+
+      polygon {
+        fill: var(--star-fill);
+        stroke: var(--star-stroke);
+        stroke-width: 1.4;
+        vector-effect: non-scaling-stroke;
+      }
+    }
+
+    &:hover .starShape polygon {
+      fill: var(--star-fill-hover);
+      stroke: var(--star-stroke-hover);
+    }
+
+    &.active .starShape polygon {
+      fill: var(--star-fill-active);
+      stroke: var(--star-stroke-active);
+    }
+
+    & .ballText {
+      z-index: 1;
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "esperanza-matematica-loterias",
+  "private": true,
+  "version": "0.5.0",
+  "type": "module",
+  "homepage": "https://rafasanz.github.io/esperanza-matematica-loterias/",
+  "author": {
+    "name": "rafasanz",
+    "url": "https://github.com/rafasanz"
+  },
+  "scripts": {
+    "build": "tsc -b && vite build",
+    "deploy": "gh-pages -d dist",
+    "dev": "vite",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "stylelint": "stylelint src/**/*.css"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-redux": "^9.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@eslint/js": "^9.39.4",
+    "@rolldown/plugin-babel": "^0.2.2",
+    "@rollup/plugin-terser": "1.0.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "gh-pages": "^6.3.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.6.0",
+    "stylelint-config-standard": "^40.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.58.0",
+    "vite": "^8.0.3"
+  }
+}

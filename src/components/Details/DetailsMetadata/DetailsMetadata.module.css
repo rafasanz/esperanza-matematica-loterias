@@ -1,0 +1,10 @@
+.detailsMetadata {
+  margin: 0 0 12px;
+  line-height: 1.45;
+  color: var(--muted);
+
+  span:not(:last-child)::after {
+    content: '|';
+    padding: 0 4px;
+  }
+}
