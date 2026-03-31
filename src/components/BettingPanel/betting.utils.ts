@@ -1,4 +1,5 @@
 import type { IBetBallType } from '~store/bets/bets.reducer';
+
 import type { IBallProps } from './Ball/Ball';
 
 type IBettingGridShapeGroup = {
@@ -15,7 +16,7 @@ export function getBettingGridShape(
     groupSize?: number;
     isStar?: boolean;
     compact: true;
-  },
+  }
 ): IBallProps[];
 export function getBettingGridShape(
   count: number,
@@ -25,7 +26,7 @@ export function getBettingGridShape(
     groupSize?: number;
     isStar?: boolean;
     compact?: false;
-  },
+  }
 ): IBettingGridShapeGroup[];
 export function getBettingGridShape(
   count: number,
@@ -35,7 +36,7 @@ export function getBettingGridShape(
     groupSize?: number;
     isStar?: boolean;
     compact?: boolean;
-  } = {},
+  } = {}
 ): IBallProps[] | IBettingGridShapeGroup[] {
   const startAt = options.startAt ?? 1;
   const groupSize = options.groupSize ?? count;

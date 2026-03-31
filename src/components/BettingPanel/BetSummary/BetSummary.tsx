@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import { clearActiveBet, setRandomBet } from '~store/bets/bets.actions';
 import { selectBetSummary } from '~store/bets/bets.selector';
 import { useAppDispatch, useAppSelector } from '~store/store';
+
 import styles from './BetSummary.module.css';
 
 export const BetSummary = () => {
@@ -36,17 +38,10 @@ export const BetSummary = () => {
           ))}
         </dl>
         <div className={styles.actions}>
-          <button
-            className="secondary"
-            onClick={() => dispatch(setRandomBet())}
-          >
+          <button className='secondary' onClick={() => dispatch(setRandomBet())}>
             Apuesta aleatoria
           </button>
-          <button
-            className="secondary"
-            onClick={clearBet}
-            disabled={cleanButtonDisabled}
-          >
+          <button className='secondary' onClick={clearBet} disabled={cleanButtonDisabled}>
             {cleanButtonLabel}
           </button>
         </div>

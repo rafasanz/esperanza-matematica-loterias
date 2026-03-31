@@ -1,11 +1,12 @@
-import { getBettingGridShape } from '../betting.utils';
-
 import { setEuromillonesDraw } from '~store/bets/bets.actions';
 import type { IBetsState } from '~store/bets/bets.reducer';
 import { selectSelectedDraw } from '~store/bets/bets.selector';
 import { useAppDispatch, useAppSelector } from '~store/store';
 import { cls } from '~utils/cls';
+
 import { Ball } from '../Ball/Ball';
+import { getBettingGridShape } from '../betting.utils';
+
 import styles from '../BettingPanel.module.css';
 
 const MAIN_GRID_COLUMNS = 10;
@@ -40,7 +41,7 @@ export const Euromillones = () => {
   ];
 
   return (
-    <section className={styles.betCard} data-bet-panel="euromillones">
+    <section className={styles.betCard} data-bet-panel='euromillones'>
       <div className={styles.betCardHead}>
         <h3>Euromillones</h3>
         <span className={styles.betPrice}>2,50 € por apuesta</span>
@@ -67,15 +68,9 @@ export const Euromillones = () => {
           {MAIN_GRID_SHAPE.map(({ balls, maxValue, value }, groupIndex) => (
             <div key={groupIndex} className={styles.ballRow}>
               <div className={styles.ballRowLabel}>
-                {String(value).padStart(2, '0')}-
-                {String(maxValue).padStart(2, '0')}
+                {String(value).padStart(2, '0')}-{String(maxValue).padStart(2, '0')}
               </div>
-              <div
-                className={styles.ballRowItems}
-                style={
-                  { '--row-count': MAIN_GRID_COLUMNS } as React.CSSProperties
-                }
-              >
+              <div className={styles.ballRowItems} style={{ '--row-count': MAIN_GRID_COLUMNS } as React.CSSProperties}>
                 {balls.map((ballProps, ballIndex) => (
                   <Ball key={ballIndex} {...ballProps} />
                 ))}
@@ -88,19 +83,13 @@ export const Euromillones = () => {
         <div className={styles.choiceRow}>
           <p className={styles.choiceTitle}>Selecciona 2 estrellas</p>
         </div>
-        <div id="euromillones-stars-grid" className={styles.starGrid}>
+        <div id='euromillones-stars-grid' className={styles.starGrid}>
           {STARS_GRIP_SHAPE.map(({ balls, maxValue, value }, groupIndex) => (
             <div key={groupIndex} className={styles.ballRow}>
               <div className={styles.ballRowLabel}>
-                {String(value).padStart(2, '0')}-
-                {String(maxValue).padStart(2, '0')}
+                {String(value).padStart(2, '0')}-{String(maxValue).padStart(2, '0')}
               </div>
-              <div
-                className={styles.ballRowItems}
-                style={
-                  { '--row-count': STARS_GRID_COLUMN } as React.CSSProperties
-                }
-              >
+              <div className={styles.ballRowItems} style={{ '--row-count': STARS_GRID_COLUMN } as React.CSSProperties}>
                 {balls.map((ballProps, ballIndex) => (
                   <Ball key={ballIndex} {...ballProps} />
                 ))}

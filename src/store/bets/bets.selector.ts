@@ -1,23 +1,16 @@
 import { createSelector } from '@reduxjs/toolkit';
+
 import { formatCurrency } from '~utils/i18n';
+
 import { betsSelector } from '../rootSelector';
 import type { ISelector } from '../store';
 import type { IBetBallType, IBetGame } from './bets.reducer';
 import { formatBallList } from './bets.utils';
 
-export const selectActiveGame: ISelector<IBetGame> = createSelector(
-  [betsSelector],
-  (state) => state.activeGame,
-);
+export const selectActiveGame: ISelector<IBetGame> = createSelector([betsSelector], (state) => state.activeGame);
 
-export const selectIsBallActive: ISelector<
-  boolean,
-  [{ type: IBetBallType; value: number }]
-> = createSelector(
-  [
-    betsSelector,
-    (_, ballArgs: { type: IBetBallType; value: number }) => ballArgs,
-  ],
+export const selectIsBallActive: ISelector<boolean, [{ type: IBetBallType; value: number }]> = createSelector(
+  [betsSelector, (_, ballArgs: { type: IBetBallType; value: number }) => ballArgs],
   (state, ballArgs) => {
     switch (ballArgs.type) {
       case 'primitiva-number':
@@ -32,7 +25,7 @@ export const selectIsBallActive: ISelector<
         ballArgs.type satisfies never;
     }
     return false;
-  },
+  }
 );
 
 export const selectBetSummary: ISelector<{

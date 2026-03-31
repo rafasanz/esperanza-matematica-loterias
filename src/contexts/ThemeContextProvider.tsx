@@ -1,11 +1,6 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-  type FC,
-  type PropsWithChildren,
-} from 'react';
-import { ThemeContext, type Theme } from './ThemeContext';
+import { type FC, type PropsWithChildren, useEffect, useMemo, useState } from 'react';
+
+import { type Theme, ThemeContext } from './ThemeContext';
 
 const LOCAL_STORAGE_KEY = 'theme';
 
@@ -28,14 +23,10 @@ export const ThemeContextProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [currentTheme]);
 
   const toggleTheme = () => {
-    setCurrentTheme((previousTheme) =>
-      previousTheme === 'dark' ? 'light' : 'dark',
-    );
+    setCurrentTheme((previousTheme) => (previousTheme === 'dark' ? 'light' : 'dark'));
   };
 
   const value = useMemo(() => ({ currentTheme, toggleTheme }), [currentTheme]);
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };

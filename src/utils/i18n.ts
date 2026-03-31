@@ -18,9 +18,7 @@ const MONTHS: Record<string, string> = {
  * Extrae el nombre del día de la semana desde una línea de fecha en castellano.
  */
 export function extractSpanishWeekday(line: string) {
-  const match = line.match(
-    /^(lunes|martes|miércoles|jueves|viernes|sábado|domingo)/i,
-  );
+  const match = line.match(/^(lunes|martes|miércoles|jueves|viernes|sábado|domingo)/i);
   return match ? match[1].toLowerCase() : null;
 }
 

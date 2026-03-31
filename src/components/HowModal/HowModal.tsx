@@ -1,4 +1,5 @@
-import { useRef, type ComponentProps, type FC } from 'react';
+import { type ComponentProps, type FC, useRef } from 'react';
+
 import { useActionOnClickOutside } from '~hooks/useActionOnClickOutside';
 
 import styles from './HowModal.module.css';
@@ -24,15 +25,12 @@ export const HowModal: FC<IHowModalProps> = ({ close }) => {
           <strong>probabilidad de acertar x premio de la categoría</strong>.
         </p>
         <p>
-          Después se compara ese retorno esperado con la apuesta mínima del
-          sorteo:{' '}
+          Después se compara ese retorno esperado con la apuesta mínima del sorteo:{' '}
           <strong>esperanza neta = retorno esperado - coste de entrada</strong>.
         </p>
         <p>
-          En juegos con bote variable se usa el premio publicado en resultados.
-          En Lotería Nacional se usa la tabla oficial estándar del jueves o del
-          sábado, porque en la página de resultados no aparecen todas sus
-          categorías.
+          En juegos con bote variable se usa el premio publicado en resultados. En Lotería Nacional se usa la tabla
+          oficial estándar del jueves o del sábado, porque en la página de resultados no aparecen todas sus categorías.
         </p>
       </div>
     </div>

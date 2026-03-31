@@ -1,10 +1,12 @@
 import { selectActiveGame } from '~store/bets/bets.selector';
 import { useAppSelector } from '~store/store';
+
 import { BetSummary } from './BetSummary/BetSummary';
 import { BetTabs } from './BetTabs/BetTabs';
-import styles from './BettingPanel.module.css';
 import { Euromillones } from './Euromillones/Euromillones';
 import { Primitiva } from './Primitiva/Primitiva';
+
+import styles from './BettingPanel.module.css';
 
 export const BettingPanel = () => {
   const activeGame = useAppSelector(selectActiveGame);
@@ -15,8 +17,8 @@ export const BettingPanel = () => {
         <div>
           <h2>Preparar apuesta</h2>
           <p className={styles.bettingCopy}>
-            Apartado visual para montar apuestas de La Primitiva y Euromillones
-            inspirado en la estructura del portal oficial.
+            Apartado visual para montar apuestas de La Primitiva y Euromillones inspirado en la estructura del portal
+            oficial.
           </p>
         </div>
       </div>
@@ -24,9 +26,7 @@ export const BettingPanel = () => {
       <BetTabs />
 
       <div className={styles.betLayout}>
-        <div>
-          {activeGame === 'primitiva' ? <Primitiva /> : <Euromillones />}
-        </div>
+        <div>{activeGame === 'primitiva' ? <Primitiva /> : <Euromillones />}</div>
 
         <BetSummary />
       </div>

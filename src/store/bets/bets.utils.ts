@@ -1,11 +1,7 @@
 /**
  * Añade o quita un valor de una selección limitada y la mantiene ordenada.
  */
-export function toggleSelection(
-  list: number[],
-  value: number,
-  maxItems: number,
-) {
+export function toggleSelection(list: number[], value: number, maxItems: number) {
   const index = list.indexOf(value);
 
   if (index >= 0) {

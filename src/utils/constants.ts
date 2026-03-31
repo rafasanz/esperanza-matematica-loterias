@@ -3,8 +3,7 @@ import type { ILiveEntry } from '~models/liveEntry';
 
 export const SOURCE_URL = 'https://www.loteriasyapuestas.es/es/resultados';
 export const FETCH_URL = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(`https://r.jina.ai/http://${SOURCE_URL}`)}`;
-export const LIVE_SOURCE_URL =
-  'https://www.loteriasyapuestas.es/es/juegos-disponibles-online';
+export const LIVE_SOURCE_URL = 'https://www.loteriasyapuestas.es/es/juegos-disponibles-online';
 export const LIVE_FETCH_URL = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(`https://r.jina.ai/http://${LIVE_SOURCE_URL}`)}`;
 
 const LOTERIA_NACIONAL_JUEVES_ROWS: IRow[] = [
@@ -73,9 +72,7 @@ export const GAMES: IGame[] = [
     name: 'Lotería Nacional (jueves)',
     startsWith: 'Lotería Nacional jueves ',
     liveName: 'Lotería Nacional',
-    liveEntryMatcher: (entry) =>
-      entry.weekday === 'jueves' &&
-      entry.subtitle === 'Primer premio a la serie',
+    liveEntryMatcher: (entry) => entry.weekday === 'jueves' && entry.subtitle === 'Primer premio a la serie',
     betPrice: 3,
     minimumTicketPrice: 3,
     fixedRows: LOTERIA_NACIONAL_JUEVES_ROWS,
@@ -86,8 +83,7 @@ export const GAMES: IGame[] = [
     startsWith: 'Lotería Nacional sábado ',
     liveName: 'Lotería Nacional',
     liveEntryMatcher: (entry: ILiveEntry) =>
-      entry.weekday === 'sábado' &&
-      entry.subtitle === 'Primer premio a la serie',
+      entry.weekday === 'sábado' && entry.subtitle === 'Primer premio a la serie',
     betPrice: 6,
     minimumTicketPrice: 6,
     fixedRows: LOTERIA_NACIONAL_SABADO_ROWS,

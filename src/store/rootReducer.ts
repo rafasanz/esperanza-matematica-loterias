@@ -1,4 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
+
 import { betsReducer } from './bets/bets.reducer';
 import { gamesRankingReducer } from './gamesRanking/gamesRanking.reducer';
 

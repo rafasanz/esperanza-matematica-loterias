@@ -1,8 +1,9 @@
 import { useAppSelector } from '~store/store';
 
-import styles from './Details.module.css';
 import { DetailsMetadata } from './DetailsMetadata/DetailsMetadata';
 import { DetailsRows } from './DetailsRows/DetailsRows';
+
+import styles from './Details.module.css';
 
 export const Details = () => {
   const ranking = useAppSelector((state) => state.gamesRanking.ranking);

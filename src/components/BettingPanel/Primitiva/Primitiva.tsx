@@ -1,11 +1,12 @@
-import { getBettingGridShape } from '../betting.utils';
-
 import { setJokerStatus, setPrimitivaDraw } from '~store/bets/bets.actions';
 import type { IBetsState } from '~store/bets/bets.reducer';
 import { selectSelectedDraw } from '~store/bets/bets.selector';
 import { useAppDispatch, useAppSelector } from '~store/store';
 import { cls } from '~utils/cls';
+
 import { Ball } from '../Ball/Ball';
+import { getBettingGridShape } from '../betting.utils';
+
 import styles from '../BettingPanel.module.css';
 
 const MAIN_GRID_COLUMNS = 10;
@@ -23,20 +24,19 @@ export const Primitiva = () => {
 
   const selectedDraw = useAppSelector(selectSelectedDraw);
 
-  const drawButtons: { key: IBetsState['primitiva']['draw']; label: string }[] =
-    [
-      {
-        key: 'proximo',
-        label: 'Próximo sorteo',
-      },
-      {
-        key: 'semanal',
-        label: 'Semanal',
-      },
-    ];
+  const drawButtons: { key: IBetsState['primitiva']['draw']; label: string }[] = [
+    {
+      key: 'proximo',
+      label: 'Próximo sorteo',
+    },
+    {
+      key: 'semanal',
+      label: 'Semanal',
+    },
+  ];
 
   return (
-    <section className={styles.betCard} data-bet-panel="primitiva">
+    <section className={styles.betCard} data-bet-panel='primitiva'>
       <div className={styles.betCardHead}>
         <h3>La Primitiva</h3>
         <span className={styles.betPrice}>1,00 € por apuesta</span>
@@ -63,15 +63,9 @@ export const Primitiva = () => {
           {MAIN_GRID_SHAPE.map(({ balls, maxValue, value }, groupIndex) => (
             <div key={groupIndex} className={styles.ballRow}>
               <div className={styles.ballRowLabel}>
-                {String(value).padStart(2, '0')}-
-                {String(maxValue).padStart(2, '0')}
+                {String(value).padStart(2, '0')}-{String(maxValue).padStart(2, '0')}
               </div>
-              <div
-                className={styles.ballRowItems}
-                style={
-                  { '--row-count': MAIN_GRID_COLUMNS } as React.CSSProperties
-                }
-              >
+              <div className={styles.ballRowItems} style={{ '--row-count': MAIN_GRID_COLUMNS } as React.CSSProperties}>
                 {balls.map((ballProps, ballIndex) => (
                   <Ball key={ballIndex} {...ballProps} />
                 ))}
@@ -93,7 +87,7 @@ export const Primitiva = () => {
       <div className={cls(styles.choiceBlock, styles.toggleLine)}>
         <label className={styles.switchRow}>
           <input
-            type="checkbox"
+            type='checkbox'
             onChange={(event) => {
               dispatch(setJokerStatus(event.target.checked));
             }}

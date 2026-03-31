@@ -1,5 +1,6 @@
 import type { IGameRankingRow } from '~models/gameRanking';
 import { formatCurrency, formatNumber } from '~utils/i18n';
+
 import styles from './DetailsRows.module.css';
 
 interface IDetailsRowsProps {
@@ -44,12 +45,9 @@ export const DetailsRows = ({ rows }: IDetailsRowsProps) => {
             <strong>Probabilidad:</strong> 1 entre {formatNumber(row.odds)}
           </p>
           <p>
-            <strong>Valor esperado:</strong>{' '}
-            {formatCurrency(row.expected, 'N/D')}
+            <strong>Valor esperado:</strong> {formatCurrency(row.expected, 'N/D')}
           </p>
-          <p className="detail-item-source">
-            {describePrizeSource(row.source)}
-          </p>
+          <p className='detail-item-source'>{describePrizeSource(row.source)}</p>
         </article>
       ))}
     </div>

@@ -62,10 +62,7 @@ export function buildLiveEntry(lines: string[]) {
   const beforeDate = dateIndex === -1 ? body : body.slice(0, dateIndex);
   const afterDate = dateIndex === -1 ? [] : body.slice(dateIndex + 1);
   const subtitle =
-    afterDate.find(
-      (line) =>
-        !isCountdownLine(line) && line !== 'Jugar' && !line.startsWith('*'),
-    ) || null;
+    afterDate.find((line) => !isCountdownLine(line) && line !== 'Jugar' && !line.startsWith('*')) || null;
   const dateLine = dateIndex === -1 ? null : body[dateIndex];
 
   return {
@@ -81,11 +78,7 @@ export function buildLiveEntry(lines: string[]) {
  * Identifica las líneas de cuenta atrás para no confundirlas con metadatos útiles.
  */
 function isCountdownLine(line: string) {
-  return (
-    /^\d+d(?: \d+h)?$/i.test(line) ||
-    /^\d+h(?: \d+min)?$/i.test(line) ||
-    /^\d+min$/i.test(line)
-  );
+  return /^\d+d(?: \d+h)?$/i.test(line) || /^\d+h(?: \d+min)?$/i.test(line) || /^\d+min$/i.test(line);
 }
 
 /**
@@ -111,9 +104,7 @@ function extractLivePrize(lines: string[]) {
  * Convierte importes con formato español a número decimal de JavaScript.
  */
 function parseEuro(value: unknown) {
-  return Number.parseFloat(
-    String(value).replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.'),
-  );
+  return Number.parseFloat(String(value).replace(/[€\s]/g, '').replace(/\./g, '').replace(',', '.'));
 }
 
 /**
@@ -121,26 +112,20 @@ function parseEuro(value: unknown) {
  */
 function isLiveDateLine(line: string) {
   return /^(lunes|martes|miércoles|jueves|viernes|sábado|domingo),\s*\d{1,2}\s+de\s+[a-záéíóú]+\s+de\s+\d{4}-\d{1,2}:\d{2}h$/i.test(
-    line,
+    line
   );
 }
 
 /**
  * Extrae de la página de resultados toda la información relevante de un juego concreto.
  */
-export function parseGame(
-  game: IGame,
-  results: string,
-  liveEntries: ILiveEntry[],
-): IParsedGame | null {
+export function parseGame(game: IGame, results: string, liveEntries: ILiveEntry[]): IParsedGame | null {
   const lines = results
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean);
 
-  const startIndex = lines.findIndex((line) =>
-    line.startsWith(game.startsWith),
-  );
+  const startIndex = lines.findIndex((line) => line.startsWith(game.startsWith));
 
   if (startIndex < 0) {
     return null;
@@ -149,9 +134,7 @@ export function parseGame(
   let endIndex = lines.length;
 
   for (let index = startIndex + 1; index < lines.length; index++) {
-    if (
-      SECTION_BOUNDARIES.some((boundary) => lines[index].startsWith(boundary))
-    ) {
+    if (SECTION_BOUNDARIES.some((boundary) => lines[index].startsWith(boundary))) {
       endIndex = index;
       break;
     }
@@ -161,10 +144,7 @@ export function parseGame(
   const sectionText = sectionLines.join('\n');
   const liveEntry = findLiveEntry(liveEntries, game);
   const resultDate = extractDate(sectionLines[0]);
-  const resultAdvertisedJackpot = extractMetric(
-    sectionText,
-    /Bote publicitado: ?([\d.,]+)\s*€/,
-  );
+  const resultAdvertisedJackpot = extractMetric(sectionText, /Bote publicitado: ?([\d.,]+)\s*€/);
   const categories = (game.categories || []).map((category) => {
     const line = findCategoryLine(sectionLines, category);
     return {
@@ -174,16 +154,11 @@ export function parseGame(
       winners: line ? extractWinnersFromLine(line) : null,
     };
   });
-  const jackpotCategoryRow =
-    categories.find((category) => category.key === game.jackpotCategory) ||
-    null;
+  const jackpotCategoryRow = categories.find((category) => category.key === game.jackpotCategory) || null;
   const canReuseResultJackpot =
-    Boolean(resultAdvertisedJackpot) &&
-    jackpotCategoryRow &&
-    jackpotCategoryRow.winners === 0;
+    Boolean(resultAdvertisedJackpot) && jackpotCategoryRow && jackpotCategoryRow.winners === 0;
   const currentAdvertisedJackpot =
-    liveEntry?.advertisedJackpot ??
-    (canReuseResultJackpot ? resultAdvertisedJackpot : null);
+    liveEntry?.advertisedJackpot ?? (canReuseResultJackpot ? resultAdvertisedJackpot : null);
   const currentJackpotSource = liveEntry?.advertisedJackpot
     ? 'bote-vigente'
     : canReuseResultJackpot
@@ -220,20 +195,14 @@ export function parseGame(
  * Busca la entrada en vivo que corresponde al juego actual, aplicando filtros cuando hace falta.
  */
 function findLiveEntry(entries: ILiveEntry[], game: IGame) {
-  const matchingEntries = entries.filter(
-    (entry: ILiveEntry) => entry.name === game.liveName,
-  );
+  const matchingEntries = entries.filter((entry: ILiveEntry) => entry.name === game.liveName);
 
   if (!matchingEntries.length) {
     return null;
   }
 
   if (typeof game.liveEntryMatcher === 'function') {
-    return (
-      matchingEntries.find((entry: ILiveEntry) =>
-        game.liveEntryMatcher?.(entry),
-      ) || null
-    );
+    return matchingEntries.find((entry: ILiveEntry) => game.liveEntryMatcher?.(entry)) || null;
   }
 
   return matchingEntries[0];
@@ -260,16 +229,10 @@ function extractMetric(text: string, regex: RegExp) {
  */
 function findCategoryLine(lines: string[], category: ICategory) {
   if (category.exactLineStart) {
-    return (
-      lines.find((line) => line.startsWith(category.exactLineStart!)) || null
-    );
+    return lines.find((line) => line.startsWith(category.exactLineStart!)) || null;
   }
 
-  return (
-    lines.find((line) =>
-      category.aliases.some((alias) => line.includes(alias)),
-    ) || null
-  );
+  return lines.find((line) => category.aliases.some((alias) => line.includes(alias))) || null;
 }
 
 /**
@@ -345,10 +308,7 @@ export function calculateExpectation(game: IParsedGame): IGameRanking {
       label: category.label,
       prize: effectivePrize,
       odds: category.odds,
-      expected:
-        effectivePrize == null
-          ? null
-          : (effectivePrize / category.odds) * multiplier,
+      expected: effectivePrize == null ? null : (effectivePrize / category.odds) * multiplier,
       source: prizeSource,
     });
   }
@@ -367,27 +327,17 @@ export function calculateExpectation(game: IParsedGame): IGameRanking {
     });
   }
 
-  const knownExpectedPayout = rows.reduce(
-    (total, row) => total + (row.expected || 0),
-    0,
-  );
+  const knownExpectedPayout = rows.reduce((total, row) => total + (row.expected || 0), 0);
   const expectedPayout = missingCurrentTopPrize ? null : knownExpectedPayout;
 
   return {
     ...game,
     rows,
-    topPrize: missingCurrentTopPrize
-      ? null
-      : rows.length
-        ? Math.max(...rows.map((row) => row.prize || 0))
-        : null,
-    expectationStatus: missingCurrentTopPrize
-      ? 'pendiente-premio-maximo'
-      : 'exacta',
+    topPrize: missingCurrentTopPrize ? null : rows.length ? Math.max(...rows.map((row) => row.prize || 0)) : null,
+    expectationStatus: missingCurrentTopPrize ? 'pendiente-premio-maximo' : 'exacta',
     knownExpectedPayout,
     expectedPayout,
-    expectedNet:
-      expectedPayout == null ? null : expectedPayout - game.minimumTicketPrice,
+    expectedNet: expectedPayout == null ? null : expectedPayout - game.minimumTicketPrice,
   };
 }
 

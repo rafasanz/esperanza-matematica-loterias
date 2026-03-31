@@ -1,23 +1,15 @@
 import js from '@eslint/js';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
 import { defineConfig, globalIgnores } from 'eslint/config';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-const IMPORT_ALIASES = [
-  '~components',
-  '~contexts',
-  '~hooks',
-  '~models',
-  '~store',
-  '~utils',
-];
+const IMPORT_ALIASES = ['~components', '~contexts', '~hooks', '~models', '~store', '~utils'];
 
 export default defineConfig([
   globalIgnores(['dist', 'node_modules', 'public', 'build']),
@@ -34,6 +26,16 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+  },
+  {
+    settings: {
+      react: { version: 'detect' },
+    },
+  },
+  {
+    rules: {
+      'react/react-in-jsx-scope': 'off',
     },
   },
   prettier,

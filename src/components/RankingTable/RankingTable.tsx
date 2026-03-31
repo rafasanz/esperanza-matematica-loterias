@@ -5,11 +5,7 @@ import { formatCurrency } from '~utils/i18n';
 
 import styles from './RankingTable.module.css';
 
-function getStatusLabel(
-  status: ILoadingStatus,
-  lastLoadTime: string | undefined,
-  loadError: string | undefined,
-) {
+function getStatusLabel(status: ILoadingStatus, lastLoadTime: string | undefined, loadError: string | undefined) {
   switch (status) {
     case 'idle':
       return 'Esperando para cargar datos...';
@@ -25,22 +21,15 @@ function getStatusLabel(
 }
 
 export const RankingTable = () => {
-  const { loadingStatus, lastLoadTime, loadError, ranking } = useAppSelector(
-    (state) => state.gamesRanking,
-  );
+  const { loadingStatus, lastLoadTime, loadError, ranking } = useAppSelector((state) => state.gamesRanking);
 
   return (
     <div className={styles.RankingTable}>
       <section>
         <p>{getStatusLabel(loadingStatus, lastLoadTime, loadError)}</p>
         <p className={styles.source}>
-          Fuente oficial de la Sociedad Estatal de Loterías y Apuestas del
-          Estado (SELAE):{' '}
-          <a
-            href="https://www.loteriasyapuestas.es/es/resultados"
-            target="_blank"
-            rel="noreferrer"
-          >
+          Fuente oficial de la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE):{' '}
+          <a href='https://www.loteriasyapuestas.es/es/resultados' target='_blank' rel='noreferrer'>
             Resultados SELAE
           </a>
         </p>
@@ -65,33 +54,17 @@ export const RankingTable = () => {
                   <td>{index + 1}</td>
                   <td>{game.name}</td>
                   <td className={styles.date}>{game.drawDate || '-'}</td>
-                  <td
-                    className={cls(
-                      styles.currency,
-                      game.topPrize == null && styles.na,
-                    )}
-                  >
+                  <td className={cls(styles.currency, game.topPrize == null && styles.na)}>
                     {formatCurrency(game.topPrize, 'N/D')}
                   </td>
-                  <td className={styles.currency}>
-                    {formatCurrency(game.minimumTicketPrice)}
-                  </td>
-                  <td
-                    className={cls(
-                      styles.currency,
-                      game.expectedPayout == null && styles.na,
-                    )}
-                  >
+                  <td className={styles.currency}>{formatCurrency(game.minimumTicketPrice)}</td>
+                  <td className={cls(styles.currency, game.expectedPayout == null && styles.na)}>
                     {formatCurrency(game.expectedPayout, 'N/D')}
                   </td>
                   <td
                     className={cls(
                       styles.currency,
-                      game.expectedNet == null
-                        ? styles.na
-                        : game.expectedNet >= 0
-                          ? styles.positive
-                          : styles.negative,
+                      game.expectedNet == null ? styles.na : game.expectedNet >= 0 ? styles.positive : styles.negative
                     )}
                   >
                     {formatCurrency(game.expectedNet, 'N/D')}

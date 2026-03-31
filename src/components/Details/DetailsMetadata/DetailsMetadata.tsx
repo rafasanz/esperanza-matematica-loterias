@@ -18,18 +18,16 @@ export const DetailsMetadata = ({ game }: IDetailsMetadataProps) => {
     meta.push(`Máxima categoría usada: ${formatCurrency(game.topPrize)}`);
   } else {
     if (game.advertisedJackpot) {
-      meta.push(
-        `Premio máximo vigente usado: ${formatCurrency(game.advertisedJackpot)}`,
-      );
+      meta.push(`Premio máximo vigente usado: ${formatCurrency(game.advertisedJackpot)}`);
     } else {
       meta.push(
-        'Premio máximo vigente: no publicado por la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) para el sorteo en juego',
+        'Premio máximo vigente: no publicado por la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) para el sorteo en juego'
       );
     }
 
     if (game.expectationStatus !== 'exacta') {
       meta.push(
-        'Esperanza matemática exacta: no disponible hasta que la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) publique la categoría máxima vigente',
+        'Esperanza matemática exacta: no disponible hasta que la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) publique la categoría máxima vigente'
       );
     }
   }

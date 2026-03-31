@@ -6,17 +6,11 @@ import { useEffect } from 'react';
  * @param refs The list of RefObject for each element that will NOT trigger the action.
  * @param action The action to be triggered on click outside of any of the given refs.
  */
-export function useActionOnClickOutside(
-  refs: RefObject<HTMLDivElement | null>[],
-  action: () => void,
-) {
+export function useActionOnClickOutside(refs: RefObject<HTMLDivElement | null>[], action: () => void) {
   useEffect(() => {
     const onClickListener = (e: MouseEvent) => {
       const target = e.target;
-      if (
-        targetIsNode(target) &&
-        !refs.some((ref) => ref.current?.contains(target))
-      ) {
+      if (targetIsNode(target) && !refs.some((ref) => ref.current?.contains(target))) {
         action();
       }
     };

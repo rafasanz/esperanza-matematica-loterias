@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+
 import { BettingPanel } from '~components/BettingPanel/BettingPanel';
 import { Details } from '~components/Details/Details';
 import { Footer } from '~components/Footer/Footer';
