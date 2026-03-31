@@ -4,8 +4,7 @@
   border-radius: 16px;
   box-shadow: var(--shadow);
   padding: 14px;
-  margin-bottom: 12px;
-  margin: 0 0 6px;
+  margin: 0 0 12px;
 
   .bettingHead,
   .betCardHead,
@@ -31,10 +30,8 @@
     grid-template-columns: minmax(0, 1.7fr) minmax(250px, 290px);
     gap: 12px;
 
-    @media (max-width: 960px) {
-      & {
-        grid-template-columns: 1fr;
-      }
+    @media (width <= 960px) {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -153,9 +150,7 @@
     gap: 8px;
   }
 
-  /**/
-
-  @media (max-width: 720px) {
+  @media (width <= 720px) {
     .bettingHead,
     .choiceRow {
       flex-direction: column;
