@@ -1,0 +1,182 @@
+.BettingPanel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+  margin: 0 0 12px;
+
+  .bettingHead,
+  .betCardHead,
+  .choiceRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .bettingHead {
+    margin-bottom: 12px;
+  }
+
+  .bettingCopy {
+    margin: 0 0 12px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .betLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(250px, 290px);
+    gap: 12px;
+
+    @media (width <= 960px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .betCard {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--panel-soft);
+    padding: 14px;
+
+    h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+  }
+
+  .betPrice {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  .choiceBlock {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+
+    &:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .title {
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+  }
+
+  .pillGroup {
+    display: flex;
+    gap: 8px;
+
+    button {
+      margin-top: 0;
+      background: var(--panel);
+      color: var(--text);
+      border-color: var(--border-strong);
+      padding: 8px 12px;
+
+      &.active {
+        background: var(--button-bg);
+        border-color: var(--button-bg);
+        color: var(--button-text);
+      }
+    }
+  }
+
+  .linkAction {
+    margin-top: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--primary);
+    text-decoration: underline;
+  }
+
+  .numberGrid,
+  .tinyGrid,
+  .starGrid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .numberGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tinyGrid {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+
+  .starGrid {
+    grid-template-columns: 1fr;
+
+    .ballRowItems {
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+    }
+  }
+
+  .ballRow {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ballRowLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .ballRowItems {
+    display: grid;
+    grid-template-columns: repeat(var(--row-count, 10), minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .toggleLine {
+    display: flex;
+    align-items: center;
+  }
+
+  .switchRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (width <= 720px) {
+    .bettingHead,
+    .choiceRow {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ballRow {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .ballRowItems {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .tinyGrid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .starGrid {
+      grid-template-columns: 1fr;
+
+      .ballRowItems {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+  }
+}

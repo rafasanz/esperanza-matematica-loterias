@@ -1,20 +1,25 @@
 # Esperanza matemática de sorteos de la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE)
 
-Versión actual: `v0.4`
+Desarrollada con TypeScript usando React y Redux.
 
-Versión estática hecha solo con `html`, `css` y `javascript`.
+## Live demo
 
-## Archivos
-
-- `index.html`
-- `styles.css`
-- `app.js`
+Clic [aquí](https://rafasanz.github.io/esperanza-matematica-loterias/) para verlo en vivo.
 
 ## Cómo usarla
 
-Abre `index.html` en un navegador.
+Las dependencias están gestionadas usando [pnpm](https://pnpm.io/installation), aunque también debería funcionar con npm o yarn.
 
-Clic aquí para verlo en vivo: `https://rafasanz.github.io/esperanza-matematica-loterias/`
+Instala las dependencias y arranca el servidor de desarrollo:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+La aplicación estará disponible en `http://localhost:5173/esperanza-matematica-loterias/`.
+
+## Otros detalles
 
 La página intenta leer datos oficiales de:
 
@@ -23,7 +28,7 @@ La página intenta leer datos oficiales de:
 
 Como la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) no suele permitir acceso directo desde navegador por CORS, el script usa un proxy público de solo lectura para poder cargar esos datos desde cliente puro y después calcula el ranking en el propio navegador.
 
-## Qué calcula
+### Qué calcula
 
 - Euromillones
 - Lotería Nacional (jueves)
