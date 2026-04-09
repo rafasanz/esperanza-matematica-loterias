@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  margin-top: 16px;
+  padding: 8px 14px;
+  border: 1px solid var(--button-bg);
+  border-radius: 9px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.secondary,
+.close-button,
+.pill,
+.bet-tab {
+  margin-top: 0;
+}
+
+.secondary,
+.close-button,
+.pill {
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--border-strong);
+}

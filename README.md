@@ -1,18 +1,28 @@
 # Esperanza matemática de sorteos de la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE)
 
-Versión actual: `v0.4`
+Versión actual: `v0.5`
 
 Versión estática hecha solo con `html`, `css` y `javascript`.
 
-## Archivos
+## Estructura
 
 - `index.html`
+- `src/main.js`
+- `src/config/lottery.js`
+- `src/lib/lotteryParser.js`
+- `src/lib/lotteryMath.js`
+- `src/ui/`
+- `src/utils/format.js`
 - `styles.css`
-- `app.js`
+- `styles/`
 
 ## Cómo usarla
 
-Abre `index.html` en un navegador.
+Abre `index.html` en un navegador moderno.
+
+`index.html` carga directamente `src/main.js`. La lógica está dividida en módulos dentro de `src/`.
+
+`styles.css` actúa como hoja principal e importa los archivos de estilo divididos dentro de `styles/`.
 
 Clic aquí para verlo en vivo: `https://rafasanz.github.io/esperanza-matematica-loterias/`
 
