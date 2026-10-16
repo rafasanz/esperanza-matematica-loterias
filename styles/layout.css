@@ -92,3 +92,78 @@
 .footer-separator {
   padding: 0 6px;
 }
+
+.icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  color: var(--primary);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  background: var(--primary-hover);
+  border-color: var(--primary);
+}
+
+.icon-button svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 5;
+}
+
+.icon-button:hover::after,
+.icon-button:focus-visible::after {
+  opacity: 1;
+}
+.icon-button .sun-icon,
+body.dark .icon-button .moon-icon {
+  display: none;
+}
+body.dark .icon-button .sun-icon {
+  display: block;
+}
+
+.ranking-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.ranking-controls input {
+  width: 6rem;
+  padding: 8px;
+  font: inherit;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--panel-soft);
+}

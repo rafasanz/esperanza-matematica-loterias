@@ -10,7 +10,6 @@
   }
 
   .header-top,
-  .header-actions,
   .betting-head,
   .bet-tabs,
   .choice-row,
@@ -30,6 +29,15 @@
     gap: 6px;
   }
 
+  .ball {
+    font-size: clamp(1.125rem, 5cqw, 1.75rem);
+  }
+
+  .header-actions {
+    flex-direction: row;
+    align-self: flex-end;
+  }
+
   .tiny-grid {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
@@ -39,7 +47,7 @@
   }
 
   .star-grid .ball-row-items {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .summary-list div {

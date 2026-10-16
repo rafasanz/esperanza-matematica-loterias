@@ -12,28 +12,94 @@
         <div class="header-top">
           <h1>Esperanza matemática de loterías</h1>
           <div class="header-actions">
-            <button id="theme-button" type="button" class="secondary">Modo oscuro</button>
-            <button id="info-button" type="button" class="secondary">Cómo se calcula</button>
+            <button
+              id="theme-button"
+              type="button"
+              class="secondary icon-button"
+              aria-label="Activar modo oscuro"
+              data-tooltip="Activar modo oscuro"
+              aria-pressed="false"
+            >
+              <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"
+                />
+              </svg>
+              <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path
+                  d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+                />
+              </svg>
+            </button>
+            <button
+              id="info-button"
+              type="button"
+              class="secondary icon-button"
+              aria-label="Cómo se calcula"
+              data-tooltip="Cómo se calcula"
+              aria-haspopup="dialog"
+              aria-controls="modal"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v6m0-10v1" />
+              </svg>
+            </button>
           </div>
         </div>
         <p>
-          Obtiene los resultados publicados por la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE)
-          y ordena los sorteos por esperanza matemática estimada según la apuesta mínima.
+          Obtiene los resultados publicados por la Sociedad Estatal de Loterías
+          y Apuestas del Estado (SELAE) y ordena los sorteos por retorno bruto
+          estimado por euro apostado.
         </p>
         <button id="reload" type="button">Recargar</button>
       </header>
 
       <section class="panel">
-        <p id="status">Cargando datos...</p>
+        <p id="status" role="status" aria-live="polite">Cargando datos...</p>
         <p class="source">
-          Fuente oficial de la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE):
-          <a href="https://www.loteriasyapuestas.es/es/resultados" target="_blank" rel="noreferrer">Resultados SELAE</a>
+          Fuente oficial de la Sociedad Estatal de Loterías y Apuestas del
+          Estado (SELAE):
+          <a
+            href="https://www.loteriasyapuestas.es/es/resultados"
+            target="_blank"
+            rel="noreferrer"
+            >Resultados SELAE</a
+          >
         </p>
       </section>
 
       <section class="panel">
+        <div class="ranking-controls">
+          <label for="other-winners"
+            >Otros acertantes del bote en el escenario</label
+          >
+          <input
+            id="other-winners"
+            type="number"
+            min="0"
+            max="1000"
+            step="1"
+            value="0"
+            required
+            aria-describedby="ranking-note"
+          />
+        </div>
+        <p id="ranking-note" class="source">
+          Estimaciones antes de impuestos: el bote variable se divide entre tu
+          apuesta y los otros acertantes indicados. Con 0 se supone un único
+          ganador. El escenario no modifica las rentas de EuroDreams ni las
+          tablas de Lotería Nacional. Las categorías inferiores usan premios
+          históricos; las rentas son totales nominales. N/D significa que faltan
+          datos verificables.
+        </p>
         <div class="table-wrap">
           <table>
+            <caption class="sr-only">
+              Ranking por retorno esperado por euro. Los sorteos incompletos
+              aparecen al final sin posición.
+            </caption>
             <thead>
               <tr>
                 <th>#</th>
@@ -43,6 +109,7 @@
                 <th class="money-col">Apuesta mínima</th>
                 <th class="money-col">Retorno esperado</th>
                 <th class="money-col">Esperanza neta</th>
+                <th class="money-col">Retorno por euro (%)</th>
               </tr>
             </thead>
             <tbody id="ranking"></tbody>
@@ -55,15 +122,33 @@
           <div>
             <h2>Preparar apuesta</h2>
             <p class="betting-copy">
-              Apartado visual para montar apuestas de La Primitiva y Euromillones inspirado en la estructura del portal
-              oficial.
+              Apartado visual para montar apuestas de La Primitiva y
+              Euromillones inspirado en la estructura del portal oficial. Es un
+              simulador: no valida ni envía apuestas. El reintegro real lo
+              asigna SELAE.
             </p>
           </div>
         </div>
 
-        <div class="bet-tabs" role="tablist" aria-label="Selector de juego">
-          <button id="tab-primitiva" class="bet-tab active" type="button" data-game-tab="primitiva">La Primitiva</button>
-          <button id="tab-euromillones" class="bet-tab" type="button" data-game-tab="euromillones">Euromillones</button>
+        <div class="bet-tabs" role="group" aria-label="Selector de juego">
+          <button
+            id="tab-primitiva"
+            class="bet-tab active"
+            type="button"
+            data-game-tab="primitiva"
+            aria-pressed="true"
+          >
+            La Primitiva
+          </button>
+          <button
+            id="tab-euromillones"
+            class="bet-tab"
+            type="button"
+            data-game-tab="euromillones"
+            aria-pressed="false"
+          >
+            Euromillones
+          </button>
         </div>
 
         <div class="bet-layout">
@@ -76,21 +161,45 @@
               <div class="choice-block">
                 <p class="choice-title">Sorteo</p>
                 <div class="pill-group">
-                  <button class="pill active" type="button" data-primitiva-draw="proximo">Próximo sorteo</button>
-                  <button class="pill" type="button" data-primitiva-draw="semanal">Semanal</button>
+                  <button
+                    class="pill active"
+                    type="button"
+                    data-primitiva-draw="proximo"
+                  >
+                    Próximo sorteo
+                  </button>
+                  <button
+                    class="pill"
+                    type="button"
+                    data-primitiva-draw="semanal"
+                  >
+                    Restantes de la semana
+                  </button>
                 </div>
               </div>
               <div class="choice-block">
                 <div class="choice-row">
                   <p class="choice-title">Selecciona 6 números</p>
-                  <button class="link-action" id="primitiva-random" type="button">Combinación automática</button>
+                  <button
+                    class="link-action"
+                    id="primitiva-random"
+                    type="button"
+                  >
+                    Combinación automática
+                  </button>
                 </div>
                 <div id="primitiva-grid" class="number-grid"></div>
               </div>
               <div class="choice-block">
                 <div class="choice-row">
-                  <p class="choice-title">Reintegro</p>
-                  <button class="link-action" id="primitiva-reintegro-random" type="button">Aleatorio</button>
+                  <p class="choice-title">Reintegro simulado</p>
+                  <button
+                    class="link-action"
+                    id="primitiva-reintegro-random"
+                    type="button"
+                  >
+                    Aleatorio
+                  </button>
                 </div>
                 <div id="primitiva-reintegro-grid" class="tiny-grid"></div>
               </div>
@@ -110,21 +219,45 @@
               <div class="choice-block">
                 <p class="choice-title">Sorteo</p>
                 <div class="pill-group">
-                  <button class="pill active" type="button" data-euromillones-draw="proximo">Próximo sorteo</button>
-                  <button class="pill" type="button" data-euromillones-draw="semana">Dos sorteos de la semana</button>
+                  <button
+                    class="pill active"
+                    type="button"
+                    data-euromillones-draw="proximo"
+                  >
+                    Próximo sorteo
+                  </button>
+                  <button
+                    class="pill"
+                    type="button"
+                    data-euromillones-draw="semana"
+                  >
+                    Restantes de la semana
+                  </button>
                 </div>
               </div>
               <div class="choice-block">
                 <div class="choice-row">
                   <p class="choice-title">Selecciona 5 números</p>
-                  <button class="link-action" id="euromillones-random" type="button">Combinación automática</button>
+                  <button
+                    class="link-action"
+                    id="euromillones-random"
+                    type="button"
+                  >
+                    Combinación automática
+                  </button>
                 </div>
                 <div id="euromillones-grid" class="number-grid"></div>
               </div>
               <div class="choice-block">
                 <div class="choice-row">
                   <p class="choice-title">Selecciona 2 estrellas</p>
-                  <button class="link-action" id="euromillones-stars-random" type="button">Aleatorias</button>
+                  <button
+                    class="link-action"
+                    id="euromillones-stars-random"
+                    type="button"
+                  >
+                    Aleatorias
+                  </button>
                 </div>
                 <div id="euromillones-stars-grid" class="star-grid"></div>
               </div>
@@ -162,9 +295,16 @@
                 </div>
               </dl>
               <div class="summary-actions">
-                <button id="bet-clear" class="secondary" type="button">Limpiar</button>
+                <button id="bet-clear" class="secondary" type="button">
+                  Limpiar
+                </button>
               </div>
-              <p id="bet-feedback" class="bet-feedback"></p>
+              <p
+                id="bet-feedback"
+                class="bet-feedback"
+                role="status"
+                aria-live="polite"
+              ></p>
             </div>
           </aside>
         </div>
@@ -174,30 +314,73 @@
 
       <footer class="site-footer">
         <p>
-          <span class="footer-version">v0.5</span>
+          <span class="footer-version">v0.6</span>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://github.com/rafasanz" target="_blank" rel="noreferrer">@rafasanz</a>
+          <a href="https://github.com/rafasanz" target="_blank" rel="noreferrer"
+            >@rafasanz</a
+          >
         </p>
       </footer>
     </main>
 
-    <div id="modal" class="modal hidden" aria-hidden="true">
+    <div
+      id="modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="method-title"
+      aria-hidden="true"
+      tabindex="-1"
+    >
       <div class="modal-card">
         <div class="modal-top">
-          <h2>Cómo se calcula la esperanza matemática</h2>
-          <button id="close-modal" type="button" class="close-button">Cerrar</button>
+          <h2 id="method-title">Cómo se calcula la esperanza matemática</h2>
+          <button id="close-modal" type="button" class="close-button">
+            Cerrar
+          </button>
         </div>
         <p>
           Para cada sorteo se suma el valor esperado de todas sus categorías:
           <strong>probabilidad de acertar x premio de la categoría</strong>.
         </p>
         <p>
-          Después se compara ese retorno esperado con la apuesta mínima del sorteo:
+          Después se compara ese retorno esperado con la apuesta mínima del
+          sorteo:
           <strong>esperanza neta = retorno esperado - coste de entrada</strong>.
         </p>
         <p>
-          En juegos con bote variable se usa el premio publicado en resultados. En Lotería Nacional se usa la tabla
-          oficial estándar del jueves o del sábado, porque en la página de resultados no aparecen todas sus categorías.
+          El ranking compara el retorno esperado dividido entre el coste: un 70
+          % equivale a recuperar, en promedio, 0,70 € por euro apostado. La
+          esperanza neta resta el coste del boleto, antes de impuestos.
+        </p>
+        <p>
+          Se combina el bote del sorteo en juego con premios unitarios del
+          último resultado. Es una estimación, no una esperanza exacta del
+          próximo sorteo. El escenario divide el bote entre 1 más los otros
+          acertantes indicados; no predice cuántos ganadores habrá. El Millón
+          usa las ventas del sorteo anterior.
+        </p>
+        <p>
+          En La Primitiva el bote anunciado incluye la primera categoría: esta
+          se cuenta por separado solo para los seis aciertos sin reintegro. En
+          Bonoloto se calcula el retorno de dos apuestas de 0,50 €, el mínimo de
+          1 €.
+        </p>
+        <p>
+          EuroDreams usa la suma nominal de las mensualidades vigentes, sin
+          descuento temporal. Los límites de reparto entre ganadores pueden
+          reducir el premio. No se presenta como un pago inmediato.
+        </p>
+        <p>
+          Lotería Nacional usa tablas ordinarias de jueves y sábado únicamente
+          si el primer premio a la serie vigente coincide. Los sorteos
+          especiales requieren su propia tabla. Los juegos hípicos no se
+          clasifican sin probabilidades adecuadas a las carreras.
+        </p>
+        <p>
+          Si falta una categoría, no se interpreta como cero: se muestra N/D.
+          Las fuentes se consultan por un servicio de lectura público; si falla,
+          puede usarse durante 24 horas una copia guardada, indicando su fecha.
         </p>
       </div>
     </div>

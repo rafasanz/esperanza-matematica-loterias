@@ -1,4 +1,5 @@
 import { formatBallList, formatMoney } from "../utils/format.js";
+import { getBetCost } from "../lib/betSchedule.js";
 
 let elements = null;
 let initialized = false;
@@ -6,7 +7,7 @@ let initialized = false;
 const betState = {
   activeGame: "primitiva",
   primitiva: createInitialPrimitivaState(),
-  euromillones: createInitialEuromillonesState()
+  euromillones: createInitialEuromillonesState(),
 };
 
 export function setupBettingUI() {
@@ -17,13 +18,28 @@ export function setupBettingUI() {
   elements = getBettingElements();
   initialized = true;
 
-  buildBallGrid(elements.primitivaGrid, 49, "primitiva-number", { startAt: 1, groupSize: 10 });
-  buildBallGrid(elements.primitivaReintegroGrid, 10, "primitiva-reintegro", { startAt: 0, compact: true });
-  buildBallGrid(elements.euromillonesGrid, 50, "euromillones-number", { startAt: 1, groupSize: 10 });
-  buildBallGrid(elements.euromillonesStarsGrid, 12, "euromillones-star", { startAt: 1, groupSize: 6, isStar: true });
+  buildBallGrid(elements.primitivaGrid, 49, "primitiva-number", {
+    startAt: 1,
+    groupSize: 10,
+  });
+  buildBallGrid(elements.primitivaReintegroGrid, 10, "primitiva-reintegro", {
+    startAt: 0,
+    compact: true,
+  });
+  buildBallGrid(elements.euromillonesGrid, 50, "euromillones-number", {
+    startAt: 1,
+    groupSize: 10,
+  });
+  buildBallGrid(elements.euromillonesStarsGrid, 12, "euromillones-star", {
+    startAt: 1,
+    groupSize: 6,
+    isStar: true,
+  });
 
   elements.primitivaRandomButton.addEventListener("click", () => {
-    betState.primitiva.numbers = pickRandomUnique(6, 1, 49).sort((left, right) => left - right);
+    betState.primitiva.numbers = pickRandomUnique(6, 1, 49).sort(
+      (left, right) => left - right,
+    );
     refreshBetButtons();
     renderBetSummary();
   });
@@ -35,13 +51,17 @@ export function setupBettingUI() {
   });
 
   elements.euromillonesRandomButton.addEventListener("click", () => {
-    betState.euromillones.numbers = pickRandomUnique(5, 1, 50).sort((left, right) => left - right);
+    betState.euromillones.numbers = pickRandomUnique(5, 1, 50).sort(
+      (left, right) => left - right,
+    );
     refreshBetButtons();
     renderBetSummary();
   });
 
   elements.euromillonesStarsRandomButton.addEventListener("click", () => {
-    betState.euromillones.stars = pickRandomUnique(2, 1, 12).sort((left, right) => left - right);
+    betState.euromillones.stars = pickRandomUnique(2, 1, 12).sort(
+      (left, right) => left - right,
+    );
     refreshBetButtons();
     renderBetSummary();
   });
@@ -53,7 +73,9 @@ export function setupBettingUI() {
 
   elements.primitivaDrawButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      elements.primitivaDrawButtons.forEach((item) => item.classList.remove("active"));
+      elements.primitivaDrawButtons.forEach((item) =>
+        item.classList.remove("active"),
+      );
       button.classList.add("active");
       betState.primitiva.draw = button.dataset.primitivaDraw;
       renderBetSummary();
@@ -62,7 +84,9 @@ export function setupBettingUI() {
 
   elements.euromillonesDrawButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      elements.euromillonesDrawButtons.forEach((item) => item.classList.remove("active"));
+      elements.euromillonesDrawButtons.forEach((item) =>
+        item.classList.remove("active"),
+      );
       button.classList.add("active");
       betState.euromillones.draw = button.dataset.euromillonesDraw;
       renderBetSummary();
@@ -76,6 +100,7 @@ export function setupBettingUI() {
 
   refreshBetButtons();
   renderBetSummary();
+  setInterval(renderBetSummary, 60000);
 }
 
 function getBettingElements() {
@@ -83,28 +108,36 @@ function getBettingElements() {
     gameTabs: document.querySelectorAll("[data-game-tab]"),
     betPanels: document.querySelectorAll("[data-bet-panel]"),
     primitivaDrawButtons: document.querySelectorAll("[data-primitiva-draw]"),
-    euromillonesDrawButtons: document.querySelectorAll("[data-euromillones-draw]"),
+    euromillonesDrawButtons: document.querySelectorAll(
+      "[data-euromillones-draw]",
+    ),
     primitivaGrid: document.getElementById("primitiva-grid"),
     primitivaReintegroGrid: document.getElementById("primitiva-reintegro-grid"),
     euromillonesGrid: document.getElementById("euromillones-grid"),
     euromillonesStarsGrid: document.getElementById("euromillones-stars-grid"),
     primitivaRandomButton: document.getElementById("primitiva-random"),
-    primitivaReintegroRandomButton: document.getElementById("primitiva-reintegro-random"),
+    primitivaReintegroRandomButton: document.getElementById(
+      "primitiva-reintegro-random",
+    ),
     euromillonesRandomButton: document.getElementById("euromillones-random"),
-    euromillonesStarsRandomButton: document.getElementById("euromillones-stars-random"),
+    euromillonesStarsRandomButton: document.getElementById(
+      "euromillones-stars-random",
+    ),
     primitivaJoker: document.getElementById("primitiva-joker"),
     betSummaryGame: document.getElementById("bet-summary-game"),
     betSummaryNumbers: document.getElementById("bet-summary-numbers"),
     betSummaryStars: document.getElementById("bet-summary-stars"),
     betSummaryStarsRow: document.getElementById("bet-summary-stars-row"),
     betSummaryReintegro: document.getElementById("bet-summary-reintegro"),
-    betSummaryReintegroRow: document.getElementById("bet-summary-reintegro-row"),
+    betSummaryReintegroRow: document.getElementById(
+      "bet-summary-reintegro-row",
+    ),
     betSummaryExtra: document.getElementById("bet-summary-extra"),
     betSummaryExtraRow: document.getElementById("bet-summary-extra-row"),
     betSummaryDraw: document.getElementById("bet-summary-draw"),
     betSummaryTotal: document.getElementById("bet-summary-total"),
     betFeedback: document.getElementById("bet-feedback"),
-    betClear: document.getElementById("bet-clear")
+    betClear: document.getElementById("bet-clear"),
   };
 }
 
@@ -113,7 +146,7 @@ function createInitialPrimitivaState() {
     draw: "proximo",
     numbers: [],
     reintegro: null,
-    joker: false
+    joker: false,
   };
 }
 
@@ -121,7 +154,7 @@ function createInitialEuromillonesState() {
   return {
     draw: "proximo",
     numbers: [],
-    stars: []
+    stars: [],
   };
 }
 
@@ -174,12 +207,18 @@ function createBallMarkup(type, value, isStar) {
       class="ball${isStar ? " star-ball" : ""}"
       data-ball-type="${type}"
       data-ball-value="${value}"
+      aria-pressed="false"
+      aria-label="${type.includes("star") ? "Estrella" : type.includes("reintegro") ? "Reintegro simulado" : "Número"} ${value}"
     >
-      ${isStar ? `
+      ${
+        isStar
+          ? `
         <svg class="star-shape" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
           <polygon points="50,1 61,35 98,35 68,57 79,95 50,73 21,95 32,57 2,35 39,35"></polygon>
         </svg>
-      ` : ""}
+      `
+          : ""
+      }
       <span class="ball-text">${String(value).padStart(2, "0")}</span>
     </button>
   `;
@@ -191,7 +230,8 @@ function toggleBall(type, value) {
   }
 
   if (type === "primitiva-reintegro") {
-    betState.primitiva.reintegro = betState.primitiva.reintegro === value ? null : value;
+    betState.primitiva.reintegro =
+      betState.primitiva.reintegro === value ? null : value;
   }
 
   if (type === "euromillones-number") {
@@ -245,50 +285,99 @@ function refreshBetButtons() {
     }
 
     button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
   });
 }
 
 function setActiveBetGame(gameId) {
   betState.activeGame = gameId;
-  elements.gameTabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.gameTab === gameId));
-  elements.betPanels.forEach((panel) => panel.classList.toggle("active", panel.dataset.betPanel === gameId));
+  elements.gameTabs.forEach((tab) => {
+    tab.classList.toggle("active", tab.dataset.gameTab === gameId);
+    tab.setAttribute("aria-pressed", String(tab.dataset.gameTab === gameId));
+  });
+  elements.betPanels.forEach((panel) =>
+    panel.classList.toggle("active", panel.dataset.betPanel === gameId),
+  );
   renderBetSummary();
 }
 
 function renderBetSummary() {
+  [
+    ...elements.primitivaDrawButtons,
+    ...elements.euromillonesDrawButtons,
+  ].forEach((button) => {
+    button.setAttribute(
+      "aria-pressed",
+      String(button.classList.contains("active")),
+    );
+  });
   if (betState.activeGame === "primitiva") {
-    const total = 1 + (betState.primitiva.joker ? 1 : 0);
+    const { total, draws } = getBetCost(
+      "primitiva",
+      betState.primitiva.draw === "semanal",
+      betState.primitiva.joker,
+    );
     elements.betSummaryGame.textContent = "La Primitiva";
-    elements.betSummaryNumbers.textContent = formatBallList(betState.primitiva.numbers);
+    elements.betSummaryNumbers.textContent = formatBallList(
+      betState.primitiva.numbers,
+    );
     elements.betSummaryStarsRow.classList.add("hidden-row");
     elements.betSummaryReintegroRow.classList.remove("hidden-row");
     elements.betSummaryExtraRow.classList.remove("hidden-row");
-    elements.betSummaryReintegro.textContent = betState.primitiva.reintegro === null ? "-" : String(betState.primitiva.reintegro);
-    elements.betSummaryExtra.textContent = betState.primitiva.joker ? "Con Joker" : "Sin Joker";
-    elements.betSummaryDraw.textContent = betState.primitiva.draw === "semanal" ? "Semanal" : "Próximo sorteo";
+    elements.betSummaryReintegro.textContent =
+      betState.primitiva.reintegro === null
+        ? "-"
+        : String(betState.primitiva.reintegro);
+    elements.betSummaryExtra.textContent = betState.primitiva.joker
+      ? "Con Joker"
+      : "Sin Joker";
+    elements.betSummaryDraw.textContent =
+      betState.primitiva.draw === "semanal"
+        ? `${draws} sorteo(s) restantes de la semana de juego`
+        : "Próximo sorteo";
     elements.betSummaryTotal.textContent = formatMoney(total);
   }
 
   if (betState.activeGame === "euromillones") {
-    const total = betState.euromillones.draw === "semana" ? 5 : 2.5;
+    const { total, draws } = getBetCost(
+      "euromillones",
+      betState.euromillones.draw === "semana",
+    );
     elements.betSummaryGame.textContent = "Euromillones";
-    elements.betSummaryNumbers.textContent = formatBallList(betState.euromillones.numbers);
+    elements.betSummaryNumbers.textContent = formatBallList(
+      betState.euromillones.numbers,
+    );
     elements.betSummaryStarsRow.classList.remove("hidden-row");
     elements.betSummaryReintegroRow.classList.add("hidden-row");
     elements.betSummaryExtraRow.classList.add("hidden-row");
-    elements.betSummaryStars.textContent = formatBallList(betState.euromillones.stars);
-    elements.betSummaryDraw.textContent = betState.euromillones.draw === "semana" ? "Dos sorteos de la semana" : "Próximo sorteo";
+    elements.betSummaryStars.textContent = formatBallList(
+      betState.euromillones.stars,
+    );
+    elements.betSummaryDraw.textContent =
+      betState.euromillones.draw === "semana"
+        ? `${draws} sorteo(s) restantes de la semana de juego`
+        : "Próximo sorteo";
     elements.betSummaryTotal.textContent = formatMoney(total);
   }
 
-  elements.betFeedback.textContent = "";
+  const state = betState[betState.activeGame];
+  const complete =
+    betState.activeGame === "primitiva"
+      ? state.numbers.length === 6 && state.reintegro !== null
+      : state.numbers.length === 5 && state.stars.length === 2;
+  elements.betFeedback.textContent = complete
+    ? "Combinación simulada completa. No se envía ninguna apuesta."
+    : "Combinación incompleta. El total indica el coste previsto al completarla.";
 }
 
 function clearActiveBet() {
   if (betState.activeGame === "primitiva") {
     betState.primitiva = createInitialPrimitivaState();
     elements.primitivaDrawButtons.forEach((button) => {
-      button.classList.toggle("active", button.dataset.primitivaDraw === "proximo");
+      button.classList.toggle(
+        "active",
+        button.dataset.primitivaDraw === "proximo",
+      );
     });
     elements.primitivaJoker.checked = false;
   }
@@ -296,7 +385,10 @@ function clearActiveBet() {
   if (betState.activeGame === "euromillones") {
     betState.euromillones = createInitialEuromillonesState();
     elements.euromillonesDrawButtons.forEach((button) => {
-      button.classList.toggle("active", button.dataset.euromillonesDraw === "proximo");
+      button.classList.toggle(
+        "active",
+        button.dataset.euromillonesDraw === "proximo",
+      );
     });
   }
 

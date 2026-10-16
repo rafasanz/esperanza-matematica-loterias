@@ -2,6 +2,13 @@
   overflow-x: auto;
 }
 
+.estimate-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
 table {
   width: 100%;
   min-width: 820px;

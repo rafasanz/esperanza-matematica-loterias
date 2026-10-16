@@ -1,0 +1,15 @@
+{
+  "name": "esperanza-matematica-loterias",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node scripts/check.mjs && prettier --check .",
+    "format": "prettier --write .",
+    "start": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

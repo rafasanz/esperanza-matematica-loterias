@@ -1,17 +1,21 @@
 export function parseEuro(value) {
-  return Number.parseFloat(String(value).replace(/[€\s]/g, "").replace(/\./g, "").replace(",", "."));
+  const normalized = String(value)
+    .replace(/[€\s\u202f]/g, "")
+    .replace(/\./g, "")
+    .replace(",", ".");
+  return /^\d+(?:\.\d+)?$/.test(normalized) ? Number(normalized) : null;
 }
 
 export function formatMoney(value) {
   return new Intl.NumberFormat("es-ES", {
     style: "currency",
     currency: "EUR",
-    maximumFractionDigits: 2
-  }).format(value || 0);
+    maximumFractionDigits: 2,
+  }).format(Number.isFinite(value) ? value : 0);
 }
 
 export function formatMoneyValue(value, fallback = "-") {
-  return value == null ? fallback : formatMoney(value);
+  return Number.isFinite(value) ? formatMoney(value) : fallback;
 }
 
 export function formatNumber(value) {
@@ -24,4 +28,23 @@ export function formatBallList(values) {
   }
 
   return values.map((value) => String(value).padStart(2, "0")).join(" · ");
+}
+
+export function formatPercent(value) {
+  return Number.isFinite(value)
+    ? new Intl.NumberFormat("es-ES", {
+        style: "percent",
+        maximumFractionDigits: 1,
+      }).format(value)
+    : "N/D";
+}
+
+export function escapeHtml(value) {
+  return String(value).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        char
+      ],
+  );
 }

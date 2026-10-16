@@ -5,18 +5,35 @@ on:
     branches:
       - main
   workflow_dispatch:
+  pull_request:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+
   deploy:
+    needs: checks
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -28,10 +45,16 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare static site
+        run: |
+          mkdir _site
+          cp index.html styles.css .nojekyll _site/
+          cp -r src styles _site/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

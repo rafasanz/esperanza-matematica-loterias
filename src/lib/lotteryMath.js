@@ -1,152 +1,146 @@
 import { formatMoney } from "../utils/format.js";
 
-export function calculateExpectation(game) {
-  if (game.fixedRows.length > 0) {
-    const rows = game.fixedRows.map((row) => ({
-      label: row.label,
-      prize: row.prize,
-      odds: row.odds,
-      expected: row.prize / row.odds
-    }));
+const validPrize = (value) => Number.isFinite(value) && value > 0;
 
-    const expectedPayout = rows.reduce((total, row) => total + row.expected, 0);
-
-    return {
-      ...game,
-      rows,
-      topPrize: rows.length ? Math.max(...rows.map((row) => row.prize)) : 0,
-      expectationStatus: "exacta",
-      expectedPayout,
-      expectedNet: expectedPayout - game.minimumTicketPrice
-    };
-  }
-
+export function calculateExpectation(game, { otherWinners = 0 } = {}) {
+  const divisor =
+    1 +
+    (Number.isInteger(otherWinners) && otherWinners >= 0 ? otherWinners : 0);
   const multiplier = game.minimumTicketPrice / game.betPrice;
-  const rows = [];
-  let missingCurrentTopPrize = false;
+  const fixedTable = game.fixedRows.length > 0;
+  const tableVerified =
+    fixedTable && game.advertisedJackpot === game.fixedRows[0].prize * 10;
+  const rows = fixedTable
+    ? game.fixedRows.map((row) => ({
+        ...row,
+        expected: tableVerified ? row.prize / row.odds : null,
+        source: "tabla-estandar",
+      }))
+    : game.categories.map((category) => {
+        const jackpot = category.key === game.jackpotCategory;
+        let prize = jackpot ? game.advertisedJackpot : category.prize;
+        let source = jackpot ? "bote-vigente" : "ultimo-resultado";
+        // An annuity is a nominal total, never just the monthly instalment.
+        if (category.fixedPrize) {
+          prize =
+            category.key === "first"
+              ? game.advertisedJackpot
+              : category.fixedPrize;
+          source = "renta-nominal";
+        }
+        // Primitiva's advertised jackpot already includes first-category winnings.
+        const odds =
+          game.id === "primitiva" && category.key === "first"
+            ? category.odds / 0.9
+            : category.odds;
+        if (jackpot && validPrize(prize)) prize /= divisor;
+        const usable = validPrize(prize) && Number.isFinite(odds) && odds > 0;
+        return {
+          label:
+            game.id === "primitiva" && category.key === "first"
+              ? "1ª (6 sin reintegro)"
+              : category.label,
+          prize: usable ? prize : null,
+          odds,
+          expected: usable ? (prize / odds) * multiplier : null,
+          source: usable ? source : "sin-dato",
+        };
+      });
 
-  for (const category of game.categories) {
-    if (!category.odds) {
-      continue;
-    }
-
-    let effectivePrize = category.prize;
-    let prizeSource = category.prize ? "ultimo-resultado" : "sin-dato";
-    const isJackpotCategory = game.jackpotCategory === category.key;
-
-    if (isJackpotCategory) {
-      if (game.advertisedJackpot) {
-        effectivePrize = game.advertisedJackpot;
-        prizeSource = game.advertisedJackpotSource || "bote-vigente";
-      } else {
-        effectivePrize = null;
-        prizeSource = "vigente-no-publicado";
-        missingCurrentTopPrize = true;
-      }
-    }
-
-    if ((!effectivePrize || effectivePrize === 0) && category.fixedPrize) {
-      effectivePrize = category.fixedPrize;
-      prizeSource = "premio-fijo";
-    }
-
+  for (const extra of game.extraPrizes || []) {
+    const usable = validPrize(extra.odds) && validPrize(extra.prize);
     rows.push({
-      label: category.label,
-      prize: effectivePrize,
-      odds: category.odds,
-      expected: effectivePrize == null ? null : (effectivePrize / category.odds) * multiplier,
-      source: prizeSource
+      ...extra,
+      expected: usable ? (extra.prize / extra.odds) * multiplier : null,
+      source: "ventas-anteriores",
     });
   }
 
-  for (const extraPrize of game.extraPrizes) {
-    if (!extraPrize.odds || !extraPrize.prize) {
-      continue;
-    }
-
-    rows.push({
-      label: extraPrize.label,
-      prize: extraPrize.prize,
-      odds: extraPrize.odds,
-      expected: (extraPrize.prize / extraPrize.odds) * multiplier,
-      source: "premio-fijo"
-    });
-  }
-
-  const knownExpectedPayout = rows.reduce((total, row) => total + (row.expected || 0), 0);
-  const expectedPayout = missingCurrentTopPrize ? null : knownExpectedPayout;
-
+  const missingData = !rows.length || rows.some((row) => row.expected == null);
+  const incomplete =
+    missingData || Boolean(game.modelNote) || (fixedTable && !tableVerified);
+  const knownExpectedPayout = rows.reduce(
+    (sum, row) => sum + (row.expected ?? 0),
+    0,
+  );
+  const expectedPayout = incomplete ? null : knownExpectedPayout;
+  const topPrize = fixedTable
+    ? tableVerified
+      ? game.fixedRows[0].prize
+      : null
+    : game.jackpotCategory
+      ? validPrize(game.advertisedJackpot)
+        ? game.advertisedJackpot
+        : null
+      : (rows[0]?.prize ?? null);
   return {
     ...game,
     rows,
-    topPrize: missingCurrentTopPrize ? null : (rows.length ? Math.max(...rows.map((row) => row.prize || 0)) : null),
-    expectationStatus: missingCurrentTopPrize ? "pendiente-premio-maximo" : "exacta",
+    topPrize,
     knownExpectedPayout,
     expectedPayout,
-    expectedNet: expectedPayout == null ? null : expectedPayout - game.minimumTicketPrice
+    expectationStatus: incomplete
+      ? "incompleta"
+      : fixedTable
+        ? "tabla-estandar"
+        : "estimada",
+    expectedNet:
+      expectedPayout == null ? null : expectedPayout - game.minimumTicketPrice,
+    returnRatio:
+      expectedPayout == null ? null : expectedPayout / game.minimumTicketPrice,
+    otherWinners: divisor - 1,
   };
 }
 
 export function describePrizeSource(source) {
-  const labels = {
-    "ultimo-resultado": "último resultado publicado",
-    "bote-vigente": "sorteo en juego",
-    "bote-acumulado": "último bote acumulado sin acertantes",
-    "premio-fijo": "importe fijo",
-    "premio-resuelto": "no reutilizado: ya adjudicado",
-    "vigente-no-publicado":
-      "La Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) no publica el premio máximo vigente y el último ya resuelto no se reutiliza",
-    "sin-bote-vigente": "sin bote vigente publicado",
-    "sin-dato": "sin dato oficial suficiente"
-  };
-
-  return labels[source] || "dato disponible";
+  return (
+    {
+      "ultimo-resultado":
+        "Premio unitario del último resultado; puede variar en el próximo sorteo.",
+      "bote-vigente":
+        "Bote vigente dividido entre los acertantes del escenario.",
+      "tabla-estandar":
+        "Tabla de un sorteo ordinario, validada con el primer premio a la serie vigente.",
+      "renta-nominal":
+        "Suma nominal de mensualidades, sin descuento temporal; sujeta a los límites de reparto del juego.",
+      "ventas-anteriores":
+        "Estimación con el número de apuestas del último sorteo, no las ventas futuras.",
+      "sin-dato": "Sin importe positivo verificable; no se sustituye por cero.",
+    }[source] || "Dato orientativo."
+  );
 }
 
 export function buildDetailMeta(game) {
-  const meta = [`Próximo sorteo: ${game.drawDate || "-"}`];
-
-  if (game.resultDate) {
-    meta.push(`Último resultado consultado: ${game.resultDate}`);
-  }
-
-  if (game.fixedRows.length > 0) {
-    meta.push(`Máxima categoría usada: ${formatMoney(game.topPrize)}`);
-    return meta.join(" | ");
-  }
-
-  if (game.advertisedJackpot) {
-    meta.push(`Premio máximo vigente usado: ${formatMoney(game.advertisedJackpot)}`);
-  } else {
+  const meta = [
+    `Sorteo en juego: ${game.drawDate || "no verificado"}`,
+    `Último resultado: ${game.resultDate || "no disponible"}`,
+  ];
+  if (game.topPrize != null)
+    meta.push(`Premio máximo anunciado: ${formatMoney(game.topPrize)}`);
+  if (game.expectationStatus === "incompleta")
     meta.push(
-      "Premio máximo vigente: no publicado por la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) para el sorteo en juego"
+      game.modelNote ||
+        "Estimación incompleta: faltan premios o una tabla vigente verificable.",
     );
-  }
-
-  if (game.expectationStatus !== "exacta") {
+  else if (game.expectationStatus === "tabla-estandar")
+    meta.push("Tabla estándar de sorteo ordinario.");
+  else if (game.id === "eurodreams")
     meta.push(
-      "Esperanza matemática exacta: no disponible hasta que la Sociedad Estatal de Loterías y Apuestas del Estado (SELAE) publique la categoría máxima vigente"
+      "Estimación bruta con suma nominal de rentas vigentes y premios históricos; sujeta a los límites de reparto del juego.",
     );
-  }
-
+  else
+    meta.push(
+      `Estimación bruta con premios históricos y ${game.otherWinners} coacertantes del bote en el escenario.`,
+    );
   return meta.join(" | ");
 }
 
 export function compareGamesByExpectation(left, right) {
-  const leftValue = left.expectedNet == null ? Number.NEGATIVE_INFINITY : left.expectedNet;
-  const rightValue = right.expectedNet == null ? Number.NEGATIVE_INFINITY : right.expectedNet;
-
-  if (rightValue !== leftValue) {
-    return rightValue - leftValue;
-  }
-
-  return left.name.localeCompare(right.name, "es");
+  const a = left.returnRatio ?? Number.NEGATIVE_INFINITY;
+  const b = right.returnRatio ?? Number.NEGATIVE_INFINITY;
+  return a === b ? left.name.localeCompare(right.name, "es") : b - a;
 }
 
 export function getNetClassName(value) {
-  if (value == null) {
-    return "na";
-  }
-
-  return value >= 0 ? "positive" : "negative";
+  return value == null ? "na" : value >= 0 ? "positive" : "negative";
 }

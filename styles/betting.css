@@ -26,6 +26,7 @@
 
 .bet-main {
   min-width: 0;
+  container-type: inline-size;
 }
 
 .bet-card,
@@ -113,13 +114,13 @@
 
 .ball-row {
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
+  grid-template-columns: clamp(4.5rem, 10cqw, 6rem) minmax(0, 1fr);
   align-items: center;
   gap: 10px;
 }
 
 .ball-row-label {
-  font-size: 12px;
+  font-size: clamp(0.9375rem, 2.2cqw, 1.1875rem);
   font-weight: 700;
   color: var(--muted);
 }
@@ -131,7 +132,7 @@
 }
 
 .star-grid .ball-row-items {
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .ball {
@@ -147,10 +148,14 @@
   border: 1px solid var(--primary-soft-border);
   background: transparent;
   color: var(--primary);
-  font-size: clamp(11px, 0.85vw, 14px);
+  font-size: clamp(1rem, 2.7cqw, 1.5rem);
   font-weight: 700;
   overflow: hidden;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .ball-text {
